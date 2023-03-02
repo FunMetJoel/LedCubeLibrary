@@ -1,17 +1,17 @@
 #include "LedCube.h"
 
+/*
+ * Connect the CS pin (5) to the clock pin of the shift register
+ * Connect the SCK pin (18) to the latch pin of the shift register
+ * Connect the MOSI pin (23) to the data pin of the shift register
+ */
+
+
 unsigned long previousMillis = 0;
 const long interval = 250;
 int frame = 0;
 
-SPISettings Settings_Cube(8000000, MSBFIRST, SPI_MODE0);
-SPISettings Settings_SD(8000000, MSBFIRST, SPI_MODE0);
-
-const char SS_Cube = 10;
-const char SS_SD = 10;
-
-
-char layers[8] = {2,3,4,5,6,7,8,9};
+LedCube Cube(5, CtrlFIRST);
 
 // Format [Frame][Plate][Row]
 byte leds[9][8][8] = {
@@ -95,29 +95,16 @@ byte leds[9][8][8] = {
   {15,15,15,15,15,15,15,15},
   {7,7,7,7,7,7,7,7},
   {3,3,3,3,3,3,3,3},
-  {1,1,1,1,1,1,1,1}}
-};
+  {1,1,1,1,1,1,1,1}}};
 
-//byte leds[6][8] = {{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}};
+byte clear[8][8] = {{1,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}};
 
-/*
- * setup() - this function runs once when you turn your Arduino on
- * We initialize the serial connection with the computer
- */
+
 void setup() 
 {
-  SPI.begin();
-  SPI.beginTransaction(Settings_Cube);
-  
-  
-  for (int i = 0; i < 8; i++){
-    pinMode(layers[i], OUTPUT);
-  }
+
 }
 
-/*
- * loop() - this function runs over and over again
- */
 void loop() 
 {
   unsigned long currentMillis = millis();
@@ -129,9 +116,9 @@ void loop()
       frame=0;
     }
   }
-  showCube(frame);
+  Cube.show(clear);
 }
-
+/*
 void showCube(int mFrame){
   for (int layer = 0; layer < 8; layer++){
     for (int j = 0; j < 8; j++){
@@ -140,11 +127,13 @@ void showCube(int mFrame){
     digitalWrite(layers[layer], HIGH);
     updateShiftRegister(leds[mFrame][layer]);
   }
-}
+}*/
 
 /*
  * updateShiftRegister() - This function sets the latchPin to low, then calls the Arduino function 'shiftOut' to shift out contents of variable 'leds' in the shift register before putting the 'latchPin' high again.
  */
+
+/*
 void updateShiftRegister(byte shiftLeds[8])
 {
   digitalWrite(SS, LOW);
@@ -154,3 +143,4 @@ void updateShiftRegister(byte shiftLeds[8])
   }
   digitalWrite(SS, HIGH);
 }
+*/

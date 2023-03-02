@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
+enum HeightRegister {CtrlFIRST,CtrlLAST};
 
 class LedCube {
   
@@ -10,7 +11,6 @@ class LedCube {
     char SS_pin;
     SPISettings Settings_Cube;
 
-    enum HeightRegister {CtrlFIRST,CtrlLAST};
     HeightRegister HRpos;
 
     void updateShiftRegisters(byte shiftLeds[8]);
