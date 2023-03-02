@@ -8,19 +8,19 @@ class LedCube {
   
   private:
     char SS_pin;
-    SPISettings Settings_Cube(8000000, MSBFIRST, SPI_MODE0);
+    SPISettings Settings_Cube;
 
-    enum HeightRegister {first,last};
+    enum HeightRegister {CtrlFIRST,CtrlLAST};
     HeightRegister HRpos;
 
-    void updateShiftRegister();
+    void updateShiftRegisters(byte shiftLeds[8]);
     
   public:
-    Cube(char SS_pin, HeightRegister HRpos);
+    LedCube(char SS_pin, HeightRegister HRpos);
 
     void init();
     
-    void show();
+    void show(byte activeFrame[8][8]);
     
 };
 #endif

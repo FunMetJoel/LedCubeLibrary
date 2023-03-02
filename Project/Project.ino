@@ -1,4 +1,4 @@
-#include <SPI.h>
+#include "LedCube.h"
 
 unsigned long previousMillis = 0;
 const long interval = 250;
@@ -148,7 +148,7 @@ void showCube(int mFrame){
 void updateShiftRegister(byte shiftLeds[8])
 {
   digitalWrite(SS, LOW);
-  for (int i = 0; i < sizeof(shiftLeds); i++)
+  for (int i = 0; i < 8; i++)
   {
     SPI.transfer(shiftLeds[i]);
   }
