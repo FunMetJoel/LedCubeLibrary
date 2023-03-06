@@ -38,6 +38,19 @@ void LedCube::updateShiftRegisters(byte shiftLeds[8], byte layerByte)
   SPI.endTransaction();
 }
 
+byte BitToByte(bool Arr[8]){
+  byte mByte = 0;
+  if(Arr[0]){mByte += 1;}
+  if(Arr[1]){mByte += 2;}
+  if(Arr[2]){mByte += 4;}
+  if(Arr[3]){mByte += 8;}
+  if(Arr[4]){mByte += 16;}
+  if(Arr[5]){mByte += 32;}
+  if(Arr[6]){mByte += 64;}
+  if(Arr[7]){mByte += 128;}
+  return mByte;
+}
+
 /*
 void LedCube::test(){
   
