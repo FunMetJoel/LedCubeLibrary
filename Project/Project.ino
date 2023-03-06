@@ -1,4 +1,5 @@
 #include "LedCube.h"
+#include <SPI.h>
 
 /*
  * Connect the CS pin (5) to the clock pin of the shift register
@@ -8,10 +9,10 @@
 
 
 unsigned long previousMillis = 0;
-const long interval = 250;
+const long interval = 1000;
 int frame = 0;
 
-LedCube Cube(5, CtrlFIRST);
+LedCube Cube(10, CtrlFIRST);
 
 // Format [Frame][Plate][Row]
 byte leds[9][8][8] = {
@@ -97,12 +98,12 @@ byte leds[9][8][8] = {
   {3,3,3,3,3,3,3,3},
   {1,1,1,1,1,1,1,1}}};
 
-byte clear[8][8] = {{1,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}};
+byte clear[8][8] = {{1,0,0,0,0,0,0,1},{2,0,0,0,0,0,0,2},{3,0,0,0,0,0,0,3},{4,0,0,0,0,0,0,4},{5,0,0,0,0,0,0,5},{6,0,0,0,0,0,0,6},{7,0,0,0,0,0,0,7},{8,0,0,0,0,0,0,8}};
+byte layeres[8][8] = {{1, 2, 3, 4, 5, 6, 7, 8},{1, 2, 3, 4, 5, 6, 7, 8},{1, 2, 3, 4, 5, 6, 7, 8},{1, 2, 3, 4, 5, 6, 7, 8},{1, 2, 3, 4, 5, 6, 7, 8},{1, 2, 3, 4, 5, 6, 7, 8},{1, 2, 3, 4, 5, 6, 7, 8},{1, 2, 3, 4, 5, 6, 7, 8}};
 
-
-void setup() 
+void setup()
 {
-
+  Serial.begin(9600);
 }
 
 void loop() 
@@ -116,31 +117,17 @@ void loop()
       frame=0;
     }
   }
-  Cube.show(clear);
+  Cube.show(leds[frame]);
+  //Cube.updateShiftRegisters(clear[frame], 255);
+  
+  Serial.println( frame);
+  
+//Cube.test();
+  //Cube.updateShiftRegisters(layeres, 255);
+/*
+  for (int j = 0; j < 256; j++){
+    Cube.show(layeres);
+    //Cube.updateShiftRegisters(layeres, j);
+    delay(10);
+  }*/
 }
-/*
-void showCube(int mFrame){
-  for (int layer = 0; layer < 8; layer++){
-    for (int j = 0; j < 8; j++){
-      digitalWrite(layers[j], LOW);
-    }
-    digitalWrite(layers[layer], HIGH);
-    updateShiftRegister(leds[mFrame][layer]);
-  }
-}*/
-
-/*
- * updateShiftRegister() - This function sets the latchPin to low, then calls the Arduino function 'shiftOut' to shift out contents of variable 'leds' in the shift register before putting the 'latchPin' high again.
- */
-
-/*
-void updateShiftRegister(byte shiftLeds[8])
-{
-  digitalWrite(SS, LOW);
-  for (int i = 0; i < 8; i++)
-  {
-    SPI.transfer(shiftLeds[i]);
-  }
-  digitalWrite(SS, HIGH);
-}
-*/

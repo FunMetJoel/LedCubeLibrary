@@ -10,10 +10,9 @@ class LedCube {
   private:
     char SS_pin;
     SPISettings Settings_Cube;
-
     HeightRegister HRpos;
 
-    void updateShiftRegisters(byte shiftLeds[8]);
+    //void updateShiftRegisters(byte shiftLeds[8], byte layerByte);
     
   public:
     LedCube(char SS_pin, HeightRegister HRpos);
@@ -21,6 +20,8 @@ class LedCube {
     void init();
     
     void show(byte activeFrame[8][8]);
-    
+
+    //void test();
+    void updateShiftRegisters(byte shiftLeds[8], byte layerByte);
 };
 #endif
